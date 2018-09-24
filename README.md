@@ -34,7 +34,7 @@ After chat between two clients.
 ### Server
 ![screenshot from 2018-09-24 16-27-48](https://user-images.githubusercontent.com/32220881/45948889-6a008580-c017-11e8-913c-deba5a1b238d.png)
 
-Once Client1 loggs out.
+Once Client1 logs out.
 
 ### Client1
 ![screenshot from 2018-09-24 16-29-20](https://user-images.githubusercontent.com/32220881/45948903-7684de00-c017-11e8-92fe-8c650f9f1826.png)
