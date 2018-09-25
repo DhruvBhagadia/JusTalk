@@ -11,7 +11,7 @@ To connect to other machine we need a socket connection. A socket connection mea
 
 ## Screenshots
 
-### Initially, three clients connect to the server.
+### - Initially, three clients connect to the server.
 
 #### Server
 ![screenshot from 2018-09-24 16-25-06](https://user-images.githubusercontent.com/32220881/45948872-55bc8880-c017-11e8-8c81-627a49dd7757.png)
@@ -19,12 +19,12 @@ To connect to other machine we need a socket connection. A socket connection mea
 #### Client0
 ![screenshot from 2018-09-24 16-25-38](https://user-images.githubusercontent.com/32220881/45948882-61a84a80-c017-11e8-8283-486756373d9a.png)
 
-### To check who all are logged-in
+### - To check who all are logged-in
 #### Client0
 ![screenshot from 2018-09-24 16-51-21](https://user-images.githubusercontent.com/32220881/45949639-29eed200-c01a-11e8-8b44-3cd358d26295.png)
 
 
-### After chat between two clients.
+### - After chat between two clients.
 
 #### Client0
 ![screenshot from 2018-09-24 16-28-05](https://user-images.githubusercontent.com/32220881/45948895-6ec53980-c017-11e8-85a1-e640af5caca6.png)
@@ -35,7 +35,7 @@ To connect to other machine we need a socket connection. A socket connection mea
 #### Server
 ![screenshot from 2018-09-24 16-27-48](https://user-images.githubusercontent.com/32220881/45948889-6a008580-c017-11e8-913c-deba5a1b238d.png)
 
-### Once Client1 logs out.
+### - Once Client1 logs out.
 
 #### Client1
 ![screenshot from 2018-09-24 16-29-20](https://user-images.githubusercontent.com/32220881/45948903-7684de00-c017-11e8-92fe-8c650f9f1826.png)
@@ -43,11 +43,11 @@ To connect to other machine we need a socket connection. A socket connection mea
 #### Client0
 ![screenshot from 2018-09-24 16-29-45](https://user-images.githubusercontent.com/32220881/45948909-78e73800-c017-11e8-89e0-7eedc90e7e72.png)
 
-### When client gives a wrong message format
+### - When client gives a wrong message format
 ![screenshot from 2018-09-24 16-56-25](https://user-images.githubusercontent.com/32220881/45949823-e6489800-c01a-11e8-8cf0-0f036c5aa74e.png)
 --------------------------------------------------------------------------------------------------------------------
 
-### To send a "Hello" image
+### - To send a "Hello" image
 #### Client who wants to send image
 ![screenshot from 2018-09-25 08-39-12](https://user-images.githubusercontent.com/32220881/45991736-dfb23300-c0a3-11e8-871f-3e0f0ae6b1bf.png)
 ------------------------------------------------------------------------------------------------------------------------
