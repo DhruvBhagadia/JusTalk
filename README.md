@@ -5,6 +5,7 @@ A basic chat application using implemented using Socket programming
 
 To connect to other machine we need a socket connection. A socket connection means the two machines have information about each other’s network location (IP Address) and TCP port.
 - Here, various clients can connect to the server and then chat with each other following "message@recipient" format.
+- A Client can send another CLient a "Hello" image using image@recipient
 - The clients can also view the users who are currently logged-in
 - The clients can quit whenever they wish to
 
@@ -44,6 +45,31 @@ Once Client1 logs out.
 
 When client gives a wrong message format
 ![screenshot from 2018-09-24 16-56-25](https://user-images.githubusercontent.com/32220881/45949823-e6489800-c01a-11e8-8cf0-0f036c5aa74e.png)
+--------------------------------------------------------------------------------------------------------------------
+
+To send a "Hello" image
+### Client who wants to send image
+![screenshot from 2018-09-25 08-39-12](https://user-images.githubusercontent.com/32220881/45991736-dfb23300-c0a3-11e8-871f-3e0f0ae6b1bf.png)
+------------------------------------------------------------------------------------------------------------------------
+### Recipient
+![screenshot from 2018-09-25 08-38-50](https://user-images.githubusercontent.com/32220881/45991733-de810600-c0a3-11e8-9559-5c67e356bcb9.png)
+-------------------------------------------------------------------------------------------------------------------------
+### Server
+![screenshot from 2018-09-25 08-39-35](https://user-images.githubusercontent.com/32220881/45991737-e0e36000-c0a3-11e8-8a23-fbde094d1d3d.png)
+--------------------------------------------------------------------------------------------------------------------------
+### Before sending the image
+![screenshot from 2018-09-25 09-12-18](https://user-images.githubusercontent.com/32220881/45991745-e345ba00-c0a3-11e8-9e6b-1beec4d6188f.png)
+--------------------------------------------------------------------------------------------------------------------------
+### After sending the image
+
+One copy stored on Server and one on Recipient's machine
+
+![screenshot from 2018-09-25 09-13-04](https://user-images.githubusercontent.com/32220881/45991747-e476e700-c0a3-11e8-9b57-aee9d9ceb611.png)
+--------------------------------------------------------------------------------------------------------------------------
+### On sending image to a recipient who is not logged-in
+![screenshot from 2018-09-25 09-10-26](https://user-images.githubusercontent.com/32220881/45991743-e17bf680-c0a3-11e8-8447-f830388d4366.png)
+--------------------------------------------------------------------------------------------------------------------------
+
 
 ## Acknowledgment
 - Inspiration for the project came from [geeksforgeeks](https://www.geeksforgeeks.org/multi-threaded-chat-application-set-1/)
