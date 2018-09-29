@@ -79,7 +79,7 @@ public class Client  {
                             if(msg.contains("image@")){
                                 System.out.println("Enter anything whose image you want to send");
                                 String file_name = sc.nextLine();
-                                String target = new String("/home/dhruv/Desktop/Java/SocketProgramming/My.sh");
+                                String target = new String("/home/dhruv/Desktop/Java/SocketProgramming/DownloadImage.sh");
                                 ProcessBuilder pb = new ProcessBuilder(target, file_name);
                                 Process process = pb.start();
                                 System.out.println("Downloading the image... Script running...");
