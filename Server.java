@@ -1,4 +1,5 @@
 import java.net.*;
+import java.util.concurrent.TimeUnit;
 import java.util.*;
 import java.io.*;
 
@@ -60,7 +61,8 @@ class ClientHandler implements Runnable{
 	String name;
 	Boolean isLoggedIn;
 	Server server;
-	String name_of_img_file; 
+	String name_of_img_file;
+	int filesize;
 	ClientHandler(Socket socket, String name, DataInputStream dis, DataOutputStream dos) {
 
 		this.socket = socket;
@@ -91,7 +93,7 @@ class ClientHandler implements Runnable{
 		String[] names = list.toArray(new String[list.size()]);
 		return (Arrays.toString(names));
 	}
-	public void sendHelloImageToRecipient(String recipient, DataOutputStream dos) {
+	public void sendImageToRecipient(String recipient, DataOutputStream dos) {
 		try {
             FileInputStream fis = new FileInputStream(name_of_img_file);
             byte[] buffer = new byte[4096];
@@ -100,7 +102,9 @@ class ClientHandler implements Runnable{
             for(ClientHandler client : server.arrlist) {
 					
 				if(client.name.equals(recipient) && client.isLoggedIn){
-					client.dos.writeUTF(this.name + " sent you Hello image");
+					System.out.println(this.name + "  --->  " + recipient + "  [ Image ]");
+					client.dos.writeUTF(this.name + " sent you an image");
+					client.dos.writeUTF(Integer.toString(filesize));
 					while (fis.read(buffer) > 0) {
                 		client.dos.write(buffer);
             		}
@@ -126,12 +130,10 @@ class ClientHandler implements Runnable{
 		try{
 
 			Random r = new Random();
-			name_of_img_file = "ImageOnServer" + Integer.toString(r.nextInt(100)) + ".png";
+			name_of_img_file = "ImageOnServer" + Integer.toString(r.nextInt(100)) + ".jpg";
 			System.out.println("file saved on server as: " + name_of_img_file);
 			FileOutputStream fos = new FileOutputStream(name_of_img_file);
 			byte[] buffer = new byte[4096];
-			
-			int filesize = 11718;
 			int read = 0;
 			int totalRead = 0;
 			int remaining = filesize;
@@ -159,7 +161,7 @@ class ClientHandler implements Runnable{
 			dos.writeUTF("Server: Some basic instructions");
 			dos.writeUTF("1. show@Server: Show all loggedIn users");
 			dos.writeUTF("2. quit@Server: Quit to log out");
-			dos.writeUTF("3. image@recipient: To send an image saying hello to recipient");
+			dos.writeUTF("3. image@recipient: Downloads image specified and sends it to recipient");
 			dos.writeUTF("4. Type anything in the format message@recipient" + 
 				"to send the message to a particular recipient");
 			dos.writeUTF("--------------------------------------------------------------------------------");
@@ -190,11 +192,13 @@ class ClientHandler implements Runnable{
 
 				}
 				else if(input.contains("image@")) {
+					String str = dis.readUTF();
+					filesize = Integer.parseInt(str);
 					String[] str_arr = input.split("@");
 					String message = str_arr[0];		
 					String recipient = str_arr[1];
 					saveFile(this.dis);
-					sendHelloImageToRecipient(recipient, this.dos);
+					sendImageToRecipient(recipient, this.dos);
 				}
 				else {
 					String[] str_arr = input.split("@");
@@ -221,7 +225,6 @@ class ClientHandler implements Runnable{
 
 			}
 			catch(Exception e) {
-
 				System.out.println("Something went wrong, I'm quiting");
 				System.exit(0);
 
