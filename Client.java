@@ -1,6 +1,9 @@
 import java.io.*; 
 import java.net.*; 
 import java.util.*; 
+import java.security.*;
+import javax.crypto.*;
+import java.nio.charset.StandardCharsets;
   
 public class Client  {
 
@@ -31,7 +34,20 @@ public class Client  {
             System.exit(0);
         }
         
-    }      
+    }    
+    public static KeyPair buildKeyPair() throws Exception{
+        int size = 2048;
+        KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+        kpg.initialize(size);
+        KeyPair keypair = kpg.generateKeyPair();
+        return keypair;
+    }  
+    public static byte[] decrypt(byte[] encrypted, PrivateKey privateKey) throws Exception {
+        System.out.println("decrypt");
+        Cipher cipher = Cipher.getInstance("RSA");
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+        return cipher.doFinal(encrypted);
+    }
     public static void saveFile(DataInputStream dis) {
 
         try{
@@ -59,18 +75,27 @@ public class Client  {
         }
 
     }  	
-    public static void main(String args[]) throws UnknownHostException, IOException  { 
+    public static void main(String args[]) throws Exception  { 
      
         Scanner sc = new Scanner(System.in);  
         Socket s = new Socket("127.0.0.1", 5056); 
         DataInputStream dis = new DataInputStream(s.getInputStream()); 
         DataOutputStream dos = new DataOutputStream(s.getOutputStream());
+
+        KeyPair keypair = buildKeyPair();
+        PublicKey publicKey = keypair.getPublic();
+        byte[] encodedPublicKey = publicKey.getEncoded();
+        String b64PublicKey = Base64.getEncoder().encodeToString(encodedPublicKey);
+        PrivateKey privateKey = keypair.getPrivate();
+
         Thread sendMessage = new Thread(new Runnable(){ 
             @Override
             public void run() { 
                 while (flag) { 
    
-                   String msg = sc.nextLine();                      
+                    String msg = sc.nextLine();
+                    if(firstTime)
+                        msg = msg + "#"+ b64PublicKey;                    
                     try { 
                     	if(!firstTime && !msg.contains("@"))
                     		System.out.println("Server: Something is wrong with format..." + 
@@ -118,16 +143,36 @@ public class Client  {
             public void run() { 
   
                 while (flag) { 
-                    try {  
-                        String msg = dis.readUTF(); 
-                        System.out.println(msg);
-                        if(msg.contains("sent you an image")) {
-                            String filesize_str = dis.readUTF();
-                            filesize = Integer.parseInt(filesize_str);
-                            saveFile(dis);
-                        } 
-                    } catch (IOException e) {
-                    	System.out.println("Something went wrong, I'm quiting");
+                    try {   
+                        if(firstTime) {
+                            String msg = dis.readUTF();
+                            System.out.println(msg);
+                            if(msg.contains("sent you an image")) {
+                                String filesize_str = dis.readUTF();
+                                filesize = Integer.parseInt(filesize_str);
+                                saveFile(dis);
+                            }
+                        }
+                        else {
+                                byte[] message = new byte[675];
+                                dis.readFully(message, 0, 675);
+                                System.out.println(new String(message));
+                                byte[] decrypted = decrypt(message, privateKey);
+                                System.out.println(new String(decrypted));
+                            
+                            // String msg = dis.readUTF();
+                            // Integer len = Integer.parseInt(msg);
+                            // System.out.println(len);
+                            // if(len>0) {
+                            //     byte[] message = new byte[len];
+                            //     dis.readFully(message);
+                            //     System.out.println(new String(message));
+                            //     byte[] decrypted = decrypt(message, privateKey);
+                            //     System.out.println(new String(decrypted));
+                            // }
+                        }  
+                    } catch (Exception e) {
+                    	System.out.println(e);
                     	stopRunning();
                     	System.exit(0);
                     } 

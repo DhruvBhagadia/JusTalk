@@ -2,6 +2,10 @@ import java.net.*;
 import java.util.concurrent.TimeUnit;
 import java.util.*;
 import java.io.*;
+import java.security.*;
+import java.security.spec.X509EncodedKeySpec;
+import javax.crypto.*;
+import java.nio.charset.StandardCharsets;
 
 class Server {
 
@@ -62,6 +66,7 @@ class ClientHandler implements Runnable{
 	Boolean isLoggedIn;
 	Server server;
 	String name_of_img_file;
+	String publicKey;
 	int filesize;
 	ClientHandler(Socket socket, String name, DataInputStream dis, DataOutputStream dos) {
 
@@ -84,11 +89,19 @@ class ClientHandler implements Runnable{
 		}
 
 	}
+	public static byte[] encrypt (String msg, String b64PublicKey) throws Exception{
+		byte[] publicKeyBytes = Base64.getDecoder().decode(b64PublicKey);
+		PublicKey publicKey = KeyFactory.getInstance("RSA").generatePublic(new X509EncodedKeySpec(publicKeyBytes));
+		Cipher cipher = Cipher.getInstance("RSA");
+		cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+		return cipher.doFinal(msg.getBytes());
+	}
 	public String showLoggedInUsers () {
 		ArrayList<String> list = new ArrayList<String>();
 		for(ClientHandler client : server.arrlist) {
-			if(client.isLoggedIn)
+			if(client.isLoggedIn){
 				list.add(client.name);
+			}
 		}
 		String[] names = list.toArray(new String[list.size()]);
 		return (Arrays.toString(names));
@@ -155,9 +168,6 @@ class ClientHandler implements Runnable{
 	public void run () {
 
 		try{
-			dos.writeUTF("Server: What name would you like yourself to be called with?");
-			String modified_name = dis.readUTF();
-			changeName(modified_name);
 			dos.writeUTF("Server: Some basic instructions");
 			dos.writeUTF("1. show@Server: Show all loggedIn users");
 			dos.writeUTF("2. quit@Server: Quit to log out");
@@ -165,6 +175,15 @@ class ClientHandler implements Runnable{
 			dos.writeUTF("4. Type anything in the format message@recipient" + 
 				"to send the message to a particular recipient");
 			dos.writeUTF("--------------------------------------------------------------------------------");
+			dos.writeUTF("Server: What name would you like yourself to be called with?");
+			String modified_name = dis.readUTF();
+			if(modified_name.contains("#")){
+				String[] credentials = modified_name.split("#");
+				modified_name = credentials[0];
+				this.publicKey = credentials[1];
+				System.out.println("PK: " + publicKey);
+			}
+			changeName(modified_name);
 		}
 		catch(Exception e) {
 			System.out.println("Something went wrong, I'm quiting");
@@ -208,18 +227,24 @@ class ClientHandler implements Runnable{
 					for(ClientHandler client : server.arrlist) {
 					
 						if(client.name.equals(recipient) && client.isLoggedIn){
+							String pk = client.publicKey;
+							byte[] encrypted = encrypt(message, pk);
+							for(int i=0; i<encrypted.length; i++) {
+								System.out.println(encrypted[i]);
+							}
 							System.out.println(this.name + "  --->  " + recipient);
-							client.dos.writeUTF(this.name + " sent you \"" + message + "\"");
+							client.dos.write(encrypted, 0, 256);
+							System.out.println(client.dos.size());
 							flag = 1;
 							break;
 
 						}
 
 					}
-				if(flag == 0) {
-					dos.writeUTF("Couldn't send message :(");
-				}
-				flag = 0;
+					if(flag == 0) {
+						dos.writeUTF("Couldn't send message :(");
+					}
+					flag = 0;
 				}
 				
 
