@@ -1,5 +1,6 @@
 # SocketProgramming
 A basic chat application implemented using Socket programming
+My motivation for this project was due to my interest in Computer Networks and CyberSecurity.
 
 ## Introduction
 
