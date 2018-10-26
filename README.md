@@ -14,6 +14,9 @@ To connect to other machine we need a socket connection. A socket connection mea
 
 ## Screenshots
 
+#### Server storing the public key of clients
+![screenshot from 2018-10-26 07-02-30](https://user-images.githubusercontent.com/32220881/47539444-220ea000-d8ee-11e8-86c2-7d36a0d58e8b.png)
+
 ### - Initially, three clients connect to the server.
 
 #### Server
