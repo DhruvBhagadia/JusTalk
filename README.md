@@ -1,5 +1,5 @@
 # SocketProgramming
-A basic chat application implemented using Socket programming.
+A basic chat application implemented using Socket programming and uses RSA an asymmetric cryptography algorithm for encryption/decryption of messages.
 
 My motivation for this project was due to my interest in Computer Networks and CyberSecurity.
 
@@ -7,6 +7,7 @@ My motivation for this project was due to my interest in Computer Networks and C
 
 To connect to other machine we need a socket connection. A socket connection means the two machines have information about each other’s network location (IP Address) and TCP port.
 - Here, various clients can connect to the server and then chat with each other following "message@recipient" format.
+- The mesaages are secured through encryption using public key of the target recipient. This message can be decrypted only by the recipeint's private key. (RSA algorithm)
 - A Client can send another Client any image using image@recipient. Here, a script runs on the background first downloading the image and sends that downloaded image to the recipient.
 - The clients can also view the users who are currently logged-in
 - The clients can quit whenever they wish to
