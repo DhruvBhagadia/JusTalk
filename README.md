@@ -1,4 +1,4 @@
-# SocketProgramming
+# Socket-Programming
 A basic chat application implemented using Socket programming and uses RSA an asymmetric cryptography algorithm for encryption/decryption of messages.
 
 My motivation for this project was due to my interest in Computer Networks and CyberSecurity.
